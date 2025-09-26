@@ -7,14 +7,31 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Home, Mail, Lock, Eye, EyeOff, User, Phone } from "lucide-react";
+import { Home, Mail, Lock, Eye, EyeOff, User, Phone, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ConnectButton, useCurrentAccount } from "@/lib/sui";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const currentAccount = useCurrentAccount();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [userType, setUserType] = useState("tenant");
+
+  // Redirect if user is already connected via Sui wallet
+  useEffect(() => {
+    if (currentAccount) {
+      toast({
+        title: "Wallet Connected!",
+        description: `Account created successfully! Connected with ${currentAccount.address.slice(0, 6)}...${currentAccount.address.slice(-4)}`,
+        variant: "default",
+      });
+      navigate("/dashboard");
+    }
+  }, [currentAccount, navigate, toast]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -24,6 +41,7 @@ const Register = () => {
       description: "Welcome to Nyumba Hunt. Please check your email to verify your account.",
       variant: "default",
     });
+    navigate("/dashboard");
   };
 
   return (
@@ -51,7 +69,31 @@ const Register = () => {
           </CardHeader>
           
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Sui Wallet Connect */}
+            <div className="mb-6">
+              <div className="w-full">
+                <ConnectButton
+                  connectText="Sign up with Sui Wallet"
+                  className="w-full bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity h-12"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground text-center mt-2">
+                Create account with your Sui wallet for secure access
+              </p>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <Separator className="w-full" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4 mt-6">
               {/* User Type Selection */}
               <div className="space-y-3">
                 <Label>I am a</Label>
@@ -206,7 +248,7 @@ const Register = () => {
                 </Label>
               </div>
               
-              <Button type="submit" className="w-full" variant="hero" size="lg">
+              <Button type="submit" className="w-full" variant="accent" size="lg">
                 Create Account
               </Button>
             </form>

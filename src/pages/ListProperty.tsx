@@ -119,9 +119,14 @@ const ListProperty = () => {
                       <SelectContent>
                         <SelectItem value="apartment">Apartment</SelectItem>
                         <SelectItem value="house">House</SelectItem>
+                        <SelectItem value="bungalow">Bungalow</SelectItem>
+                        <SelectItem value="maisonette">Maisonette</SelectItem>
+                        <SelectItem value="bedsitter">Bedsitter</SelectItem>
+                        <SelectItem value="single-room">Single Room</SelectItem>
+                        <SelectItem value="double-room">Double Room</SelectItem>
                         <SelectItem value="studio">Studio</SelectItem>
+                        <SelectItem value="cottage">Cottage</SelectItem>
                         <SelectItem value="villa">Villa</SelectItem>
-                        <SelectItem value="townhouse">Townhouse</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

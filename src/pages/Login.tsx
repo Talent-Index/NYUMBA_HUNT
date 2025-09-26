@@ -6,24 +6,42 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Home, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Home, Mail, Lock, Eye, EyeOff, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ConnectButton, useCurrentAccount } from "@/lib/sui";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const currentAccount = useCurrentAccount();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Redirect if user is already connected via Sui wallet
+  useEffect(() => {
+    if (currentAccount) {
+      toast({
+        title: "Wallet Connected!",
+        description: `Welcome back! Connected with ${currentAccount.address.slice(0, 6)}...${currentAccount.address.slice(-4)}`,
+        variant: "default",
+      });
+      navigate("/dashboard");
+    }
+  }, [currentAccount, navigate, toast]);
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     
-    // In a real app, you would authenticate with Supabase here
+    // Traditional email/password login
     toast({
       title: "Login Successful!",
       description: "Welcome back to Nyumba Hunt",
       variant: "default",
     });
+    navigate("/dashboard");
   };
 
   return (
@@ -51,7 +69,31 @@ const Login = () => {
           </CardHeader>
           
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Sui Wallet Connect */}
+            <div className="mb-6">
+              <div className="w-full">
+                <ConnectButton
+                  connectText="Sign in with Sui Wallet"
+                  className="w-full bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity h-12"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground text-center mt-2">
+                Connect your Sui wallet for secure, decentralized authentication
+              </p>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <Separator className="w-full" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="space-y-4 mt-6">
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <div className="relative">
@@ -115,8 +157,8 @@ const Login = () => {
                 </Link>
               </div>
               
-              <Button type="submit" className="w-full" variant="hero" size="lg">
-                Sign In
+              <Button type="submit" className="w-full" variant="accent" size="lg">
+                Sign In with Email
               </Button>
             </form>
             

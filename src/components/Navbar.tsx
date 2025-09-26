@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Search, User, Home, MapPin, Plus } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Menu, Search, User, Home, MapPin, Plus, Wallet, LogOut } from "lucide-react";
+import { useCurrentAccount, ConnectButton } from "@/lib/sui";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const currentAccount = useCurrentAccount();
 
   const navigation = [
     { name: "Home", href: "/", icon: Home },
@@ -51,18 +54,29 @@ const Navbar = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/dashboard">
-                <User className="h-4 w-4 mr-2" />
-                Dashboard
-              </Link>
-            </Button>
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/login">Login</Link>
-            </Button>
-            <Button variant="hero" size="sm" asChild>
-              <Link to="/register">Get Started</Link>
-            </Button>
+            {currentAccount ? (
+              <div className="flex items-center space-x-3">
+                <Badge variant="secondary" className="bg-success text-success-foreground">
+                  <Wallet className="h-3 w-3 mr-1" />
+                  Connected
+                </Badge>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/dashboard">
+                    <User className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/login">Login</Link>
+                </Button>
+                <Button variant="hero" size="sm" asChild>
+                  <Link to="/register">Get Started</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -93,22 +107,43 @@ const Navbar = () => {
                   );
                 })}
                 <div className="border-t pt-4 space-y-2">
-                  <Link
-                    to="/dashboard"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50"
-                  >
-                    <User className="h-5 w-5" />
-                    <span>Dashboard</span>
-                  </Link>
-                  <div className="px-4 space-y-2">
-                    <Button variant="outline" className="w-full" asChild>
-                      <Link to="/login">Login</Link>
-                    </Button>
-                    <Button variant="hero" className="w-full" asChild>
-                      <Link to="/register">Get Started</Link>
-                    </Button>
-                  </div>
+                  {currentAccount ? (
+                    <div className="px-4 space-y-2">
+                      <div className="flex items-center justify-center">
+                        <Badge variant="secondary" className="bg-success text-success-foreground">
+                          <Wallet className="h-3 w-3 mr-1" />
+                          Wallet Connected
+                        </Badge>
+                      </div>
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50"
+                      >
+                        <User className="h-5 w-5" />
+                        <span>Dashboard</span>
+                      </Link>
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50"
+                      >
+                        <User className="h-5 w-5" />
+                        <span>Login</span>
+                      </Link>
+                      <div className="px-4 space-y-2">
+                        <Button variant="outline" className="w-full" asChild>
+                          <Link to="/login">Login</Link>
+                        </Button>
+                        <Button variant="hero" className="w-full" asChild>
+                          <Link to="/register">Get Started</Link>
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>

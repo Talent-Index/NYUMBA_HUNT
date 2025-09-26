@@ -23,18 +23,21 @@ import {
   Play
 } from "lucide-react";
 import heroImage from "@/assets/hero-property.jpg";
+import modernApartmentImage from "@/assets/modern-apartment.jpg";
+import luxuryHouseImage from "@/assets/luxury-house.jpg";
+import studioImage from "@/assets/studio-apartment.jpg";
 
 const Index = () => {
   const [searchLocation, setSearchLocation] = useState("");
 
-  // Mock featured properties
+  // Mock featured properties with real images
   const featuredProperties = [
     {
       id: 1,
       title: "Modern 2-Bedroom Apartment in Kilimani",
       location: "Kilimani, Nairobi",
       price: "KSh 80,000",
-      image: "/placeholder.svg",
+      image: modernApartmentImage,
       bedrooms: 2,
       bathrooms: 2,
       parking: 1,
@@ -46,7 +49,7 @@ const Index = () => {
       title: "Luxury 3-Bedroom House in Karen",
       location: "Karen, Nairobi",
       price: "KSh 150,000",
-      image: "/placeholder.svg",
+      image: luxuryHouseImage,
       bedrooms: 3,
       bathrooms: 3,
       parking: 2,
@@ -58,7 +61,7 @@ const Index = () => {
       title: "Executive Studio in Westlands",
       location: "Westlands, Nairobi",
       price: "KSh 60,000",
-      image: "/placeholder.svg",
+      image: studioImage,
       bedrooms: 1,
       bathrooms: 1,
       parking: 1,
@@ -195,6 +198,10 @@ const Index = () => {
                       <SelectContent>
                         <SelectItem value="apartment">Apartment</SelectItem>
                         <SelectItem value="house">House</SelectItem>
+                        <SelectItem value="bungalow">Bungalow</SelectItem>
+                        <SelectItem value="maisonette">Maisonette</SelectItem>
+                        <SelectItem value="bedsitter">Bedsitter</SelectItem>
+                        <SelectItem value="single-room">Single Room</SelectItem>
                         <SelectItem value="studio">Studio</SelectItem>
                       </SelectContent>
                     </Select>

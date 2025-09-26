@@ -7,8 +7,15 @@ import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, Bed, Bath, Car, Heart, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import modernApartmentImage from "@/assets/modern-apartment.jpg";
+import luxuryHouseImage from "@/assets/luxury-house.jpg";
+import studioImage from "@/assets/studio-apartment.jpg";
+import bedsitterImage from "@/assets/bedsitter.jpg";
+import bungalowImage from "@/assets/bungalow.jpg";
+import maisonetteImage from "@/assets/maisonette.jpg";
+
 const Properties = () => {
-  // Mock properties data
+  // Mock properties data with Kenyan property types and real images
   const properties = [
     {
       id: 1,
@@ -19,36 +26,78 @@ const Properties = () => {
       bedrooms: 2,
       bathrooms: 2,
       parking: 1,
-      image: "/placeholder.svg",
+      image: modernApartmentImage,
       type: "Apartment",
       status: "Available",
       featured: true,
     },
     {
       id: 2,
-      title: "Spacious 3-Bedroom House in Karen",
+      title: "Luxury 3-Bedroom Bungalow in Karen",
       location: "Karen, Nairobi",
       price: "KSh 150,000",
       period: "month",
       bedrooms: 3,
       bathrooms: 3,
       parking: 2,
-      image: "/placeholder.svg",
-      type: "House",
+      image: bungalowImage,
+      type: "Bungalow",
       status: "Available",
       featured: false,
     },
     {
       id: 3,
-      title: "Executive 1-Bedroom Studio in Westlands",
+      title: "Executive Bedsitter in Westlands",
       location: "Westlands, Nairobi",
-      price: "KSh 60,000",
+      price: "KSh 35,000",
       period: "month",
       bedrooms: 1,
       bathrooms: 1,
       parking: 1,
-      image: "/placeholder.svg",
-      type: "Studio",
+      image: bedsitterImage,
+      type: "Bedsitter",
+      status: "Available",
+      featured: true,
+    },
+    {
+      id: 4,
+      title: "Spacious 4-Bedroom Maisonette in Lavington",
+      location: "Lavington, Nairobi",
+      price: "KSh 200,000",
+      period: "month",
+      bedrooms: 4,
+      bathrooms: 3,
+      parking: 2,
+      image: maisonetteImage,
+      type: "Maisonette",
+      status: "Available",
+      featured: true,
+    },
+    {
+      id: 5,
+      title: "Cozy Single Room in Kayole",
+      location: "Kayole, Nairobi",
+      price: "KSh 15,000",
+      period: "month",
+      bedrooms: 1,
+      bathrooms: 1,
+      parking: 0,
+      image: studioImage,
+      type: "Single Room",
+      status: "Available",
+      featured: false,
+    },
+    {
+      id: 6,
+      title: "Luxury House in Runda",
+      location: "Runda, Nairobi",
+      price: "KSh 350,000",
+      period: "month",
+      bedrooms: 5,
+      bathrooms: 4,
+      parking: 3,
+      image: luxuryHouseImage,
+      type: "House",
       status: "Available",
       featured: true,
     },
@@ -81,12 +130,17 @@ const Properties = () => {
                 <SelectTrigger>
                   <SelectValue placeholder="Property Type" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="apartment">Apartment</SelectItem>
-                  <SelectItem value="house">House</SelectItem>
-                  <SelectItem value="studio">Studio</SelectItem>
-                  <SelectItem value="villa">Villa</SelectItem>
-                </SelectContent>
+                      <SelectContent>
+                        <SelectItem value="apartment">Apartment</SelectItem>
+                        <SelectItem value="house">House</SelectItem>
+                        <SelectItem value="bungalow">Bungalow</SelectItem>
+                        <SelectItem value="maisonette">Maisonette</SelectItem>
+                        <SelectItem value="bedsitter">Bedsitter</SelectItem>
+                        <SelectItem value="single-room">Single Room</SelectItem>
+                        <SelectItem value="double-room">Double Room</SelectItem>
+                        <SelectItem value="studio">Studio</SelectItem>
+                        <SelectItem value="cottage">Cottage</SelectItem>
+                      </SelectContent>
               </Select>
 
               <Select>
