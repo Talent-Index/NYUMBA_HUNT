@@ -8,7 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Home, Mail, Lock, Eye, EyeOff, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { ConnectButton, useCurrentAccount } from "@/lib/sui";
+import { useCurrentAccount } from "@/lib/sui";
+import ConnectWalletButton from "@/components/ConnectWalletButton";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -72,13 +73,10 @@ const Login = () => {
             {/* Sui Wallet Connect */}
             <div className="mb-6">
               <div className="w-full">
-                <ConnectButton
-                  connectText="Sign in with Sui Wallet"
-                  className="w-full bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity h-12"
-                />
+                <ConnectWalletButton />
               </div>
               <p className="text-xs text-muted-foreground text-center mt-2">
-                Connect your Sui wallet for secure, decentralized authentication
+                Connect your Sui Slush wallet for secure, decentralized authentication
               </p>
             </div>
 

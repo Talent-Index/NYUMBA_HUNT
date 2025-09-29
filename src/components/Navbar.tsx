@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Menu, Search, User, Home, MapPin, Plus, Wallet, LogOut } from "lucide-react";
-import { useCurrentAccount, ConnectButton } from "@/lib/sui";
+import { useCurrentAccount } from "@/lib/sui";
+import ConnectWalletButton from "./ConnectWalletButton";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,14 +69,7 @@ const Navbar = () => {
                 </Button>
               </div>
             ) : (
-              <>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button variant="hero" size="sm" asChild>
-                  <Link to="/register">Get Started</Link>
-                </Button>
-              </>
+              <ConnectWalletButton />
             )}
           </div>
 
@@ -125,24 +119,9 @@ const Navbar = () => {
                       </Link>
                     </div>
                   ) : (
-                    <>
-                      <Link
-                        to="/login"
-                        onClick={() => setIsOpen(false)}
-                        className="flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50"
-                      >
-                        <User className="h-5 w-5" />
-                        <span>Login</span>
-                      </Link>
-                      <div className="px-4 space-y-2">
-                        <Button variant="outline" className="w-full" asChild>
-                          <Link to="/login">Login</Link>
-                        </Button>
-                        <Button variant="hero" className="w-full" asChild>
-                          <Link to="/register">Get Started</Link>
-                        </Button>
-                      </div>
-                    </>
+                    <div className="px-4">
+                      <ConnectWalletButton />
+                    </div>
                   )}
                 </div>
               </div>

@@ -19,14 +19,33 @@ import {
   Tv,
   AirVent,
   Shield,
-  Car
+  Car,
+  Loader2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { usePropertyContract, PropertyData } from "@/lib/propertyContract";
+import { useCurrentAccount } from "@mysten/dapp-kit";
 
 const ListProperty = () => {
   const { toast } = useToast();
+  const currentAccount = useCurrentAccount();
+  const { propertyContract, signAndExecuteTransactionBlock, isConnected } = usePropertyContract();
+  
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    location: '',
+    price: '',
+    bedrooms: '',
+    bathrooms: '',
+    parking: '',
+    propertyType: '',
+    description: '',
+  });
 
   const amenities = [
     { id: "wifi", name: "WiFi", icon: Wifi },
@@ -57,13 +76,81 @@ const ListProperty = () => {
     );
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    toast({
-      title: "Property Listed Successfully!",
-      description: "Your property has been listed and is now visible to potential tenants.",
-      variant: "default",
-    });
+    
+    if (!isConnected || !currentAccount) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to list a property.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Validate form data
+      if (!formData.title || !formData.location || !formData.price || !formData.propertyType) {
+        toast({
+          title: "Missing Information",
+          description: "Please fill in all required fields.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Convert price to smallest unit (cents)
+      const priceInCents = Math.round(parseFloat(formData.price) * 100);
+
+      const propertyData: PropertyData = {
+        title: formData.title,
+        location: formData.location,
+        price: priceInCents,
+        bedrooms: parseInt(formData.bedrooms) || 0,
+        bathrooms: parseInt(formData.bathrooms) || 0,
+        parking: parseInt(formData.parking) || 0,
+        propertyType: formData.propertyType,
+        description: formData.description,
+      };
+
+      // Create property on-chain
+      const transactionDigest = await propertyContract.createProperty(
+        propertyData,
+        signAndExecuteTransactionBlock
+      );
+
+      toast({
+        title: "Property Listed Successfully!",
+        description: `Your property has been listed on-chain. Transaction: ${transactionDigest.slice(0, 8)}...`,
+        variant: "default",
+      });
+
+      // Reset form
+      setFormData({
+        title: '',
+        location: '',
+        price: '',
+        bedrooms: '',
+        bathrooms: '',
+        parking: '',
+        propertyType: '',
+        description: '',
+      });
+      setSelectedImages([]);
+      setSelectedAmenities([]);
+
+    } catch (error) {
+      console.error('Error listing property:', error);
+      toast({
+        title: "Error Listing Property",
+        description: "There was an error listing your property. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
