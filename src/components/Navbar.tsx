@@ -26,9 +26,11 @@ const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-              <Home className="h-4 w-4 text-primary-foreground" />
-            </div>
+            <img
+              src="/nyumba_hunt_logo.jpeg"
+              alt="Nyumba Hunt"
+              className="h-8 w-8 rounded-lg object-contain"
+            />
             <span className="text-xl font-bold text-primary">Nyumba Hunt</span>
           </Link>
 

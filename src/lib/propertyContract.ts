@@ -220,17 +220,18 @@ export function usePropertyContract() {
     return new SuiClient({ url: 'https://fullnode.testnet.sui.io:443' });
   };
 
-  const getSignAndExecuteTransactionBlock = () => {
+  // Safe wrapper that does NOT throw during render; only checks at call time
+  const signAndExecuteTransactionBlock = async (txb: TransactionBlock): Promise<{ digest: string }> => {
     if (!currentWallet) {
-      throw new Error('No wallet connected');
+      throw new Error('Connect wallet first');
     }
-    
-    return currentWallet.signAndExecuteTransactionBlock;
+    const result = await currentWallet.signAndExecuteTransactionBlock({ transactionBlock: txb });
+    return { digest: result.digest } as { digest: string };
   };
 
   return {
     propertyContract: new PropertyContractService(getClient()),
-    signAndExecuteTransactionBlock: getSignAndExecuteTransactionBlock(),
+    signAndExecuteTransactionBlock,
     isConnected: !!currentWallet,
   };
 }

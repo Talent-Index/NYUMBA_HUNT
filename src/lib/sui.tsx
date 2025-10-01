@@ -1,4 +1,5 @@
 import { createNetworkConfig, SuiClientProvider, WalletProvider, ConnectButton, useCurrentAccount } from '@mysten/dapp-kit';
+import '@mysten/dapp-kit/dist/index.css';
 import { getFullnodeUrl } from '@mysten/sui.js/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { registerSlushWallet } from '@mysten/slush-wallet';
